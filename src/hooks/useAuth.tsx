@@ -100,6 +100,12 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         return;
       }
 
+      if (error.code === 'auth/unauthorized-domain') {
+        toast.error('This domain is not authorized in Firebase. Please add this URL to your Firebase Console Authorized Domains.');
+        console.error('Unauthorized domain error. Please add your current domain to Firebase Console > Authentication > Settings > Authorized Domains.');
+        return;
+      }
+
       console.error('Login error:', error);
       toast.error(error.message || 'An error occurred during sign-in.');
     }
