@@ -33,17 +33,9 @@ export default function Dashboard() {
             Got a broken screen? Software acting up? StudentServe connects you with skilled student technicians right on your campus.
           </p>
           <div className="flex flex-wrap justify-center gap-4">
-            {!user ? (
-               <Link to="/login">
-                <Button size="lg" className="px-8 font-bold">
-                  Join StudentServe
-                </Button>
-               </Link>
-            ) : (
-              <Button size="lg" render={<Link to="/services" />}>
-                Browse Services <ArrowRight className="ml-2 h-4 w-4" />
-              </Button>
-            )}
+            <Button size="lg" render={<Link to="/services" />}>
+              Browse Services <ArrowRight className="ml-2 h-4 w-4" />
+            </Button>
             <Button size="lg" variant="outline" render={<Link to="/profile" />}>
               Become a Provider
             </Button>
