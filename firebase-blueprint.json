@@ -1,0 +1,91 @@
+{
+  "entities": {
+    "User": {
+      "title": "User",
+      "description": "A user of the StudentServe platform.",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string" },
+        "displayName": { "type": "string" },
+        "email": { "type": "string" },
+        "photoURL": { "type": "string" },
+        "role": { "type": "string", "enum": ["seeker", "provider", "admin"] },
+        "skills": { "type": "array", "items": { "type": "string" } },
+        "bio": { "type": "string" },
+        "averageRating": { "type": "number" },
+        "totalReviews": { "type": "number" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["uid", "email", "role"]
+    },
+    "ServiceListing": {
+      "title": "Service Listing",
+      "description": "An IT service offered by a student provider.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "providerId": { "type": "string" },
+        "providerName": { "type": "string" },
+        "title": { "type": "string" },
+        "description": { "type": "string" },
+        "category": { "type": "string", "enum": ["Hardware", "Software", "Networking", "Mobile", "Other"] },
+        "priceRange": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["providerId", "title", "category"]
+    },
+    "ServiceRequest": {
+      "title": "Service Request",
+      "description": "A request for a service from a seeker to a provider.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "seekerId": { "type": "string" },
+        "seekerName": { "type": "string" },
+        "providerId": { "type": "string" },
+        "providerName": { "type": "string" },
+        "serviceId": { "type": "string" },
+        "serviceTitle": { "type": "string" },
+        "status": { "type": "string", "enum": ["pending", "accepted", "in-progress", "completed", "cancelled"] },
+        "description": { "type": "string" },
+        "reviewId": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "updatedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["seekerId", "providerId", "serviceId", "status"]
+    },
+    "Review": {
+      "title": "Review",
+      "description": "A rating and comment for a completed service.",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "requestId": { "type": "string" },
+        "providerId": { "type": "string" },
+        "seekerId": { "type": "string" },
+        "rating": { "type": "integer", "minimum": 1, "maximum": 5 },
+        "comment": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["requestId", "providerId", "seekerId", "rating"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": "User",
+      "description": "User profiles"
+    },
+    "/services/{serviceId}": {
+      "schema": "ServiceListing",
+      "description": "Available IT services"
+    },
+    "/requests/{requestId}": {
+      "schema": "ServiceRequest",
+      "description": "Service requests and history"
+    },
+    "/reviews/{reviewId}": {
+      "schema": "Review",
+      "description": "Service reviews"
+    }
+  }
+}
