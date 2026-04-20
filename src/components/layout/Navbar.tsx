@@ -67,7 +67,15 @@ export default function Navbar() {
                   </Link>
                 </div>
               </div>
-              {!user && <Button onClick={login} className="w-full">Log In</Button>}
+              {!user && (
+                <div className="mt-auto pt-6 border-t">
+                  <Link to="/login" className="block">
+                    <Button className="w-full py-6 text-lg">
+                      Sign In with Google
+                    </Button>
+                  </Link>
+                </div>
+              )}
             </SheetContent>
           </Sheet>
 
@@ -112,7 +120,9 @@ export default function Navbar() {
               </DropdownMenu>
             </>
           ) : (
-            <Button onClick={login} size="sm">Log In</Button>
+            <Link to="/login">
+              <Button size="sm" className="px-6 font-bold">Log In</Button>
+            </Link>
           )}
         </div>
       </div>

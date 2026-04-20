@@ -1,8 +1,10 @@
 import { Link } from 'react-router-dom';
 import { Monitor, Facebook, Twitter, Github, Gamepad2, MessageCircle } from 'lucide-react';
+import { useAuth } from '@/src/hooks/useAuth';
 
 export default function Footer() {
   const currentYear = new Date().getFullYear();
+  const { user, login } = useAuth();
 
   return (
     <footer className="border-t bg-muted/30 py-12 mt-auto">
@@ -36,6 +38,13 @@ export default function Footer() {
                   Become a Provider
                 </Link>
               </li>
+              {!user && (
+                <li className="pt-2 border-t mt-2">
+                  <button onClick={login} className="text-primary hover:underline font-medium">
+                    Sign In / Join Now
+                  </button>
+                </li>
+              )}
             </ul>
           </div>
           

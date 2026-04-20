@@ -4,6 +4,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Badge } from '@/components/ui/badge';
 import { Monitor, Smartphone, Cpu, Globe, ArrowRight, ShieldCheck, Star } from 'lucide-react';
 import { motion } from 'motion/react';
+import { useAuth } from '@/src/hooks/useAuth';
 
 const CATEGORIES = [
   { name: 'Hardware', icon: Cpu, description: 'Laptop repairs, RAM upgrades, screen replacements.' },
@@ -13,6 +14,8 @@ const CATEGORIES = [
 ];
 
 export default function Dashboard() {
+  const { user, login } = useAuth();
+
   return (
     <div className="flex flex-col gap-16 py-8">
       {/* Hero Section */}
@@ -30,9 +33,17 @@ export default function Dashboard() {
             Got a broken screen? Software acting up? StudentServe connects you with skilled student technicians right on your campus.
           </p>
           <div className="flex flex-wrap justify-center gap-4">
-            <Button size="lg" render={<Link to="/services" />}>
+            {!user ? (
+               <Link to="/login">
+                <Button size="lg" className="px-8 font-bold">
+                  Join StudentServe
+                </Button>
+               </Link>
+            ) : (
+              <Button size="lg" render={<Link to="/services" />}>
                 Browse Services <ArrowRight className="ml-2 h-4 w-4" />
-            </Button>
+              </Button>
+            )}
             <Button size="lg" variant="outline" render={<Link to="/profile" />}>
               Become a Provider
             </Button>

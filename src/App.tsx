@@ -6,6 +6,7 @@ import ServicesListing from '@/src/pages/ServicesListing';
 import ServiceDetails from '@/src/pages/ServiceDetails';
 import RequestsManagement from '@/src/pages/Requests';
 import Profile from '@/src/pages/Profile';
+import Login from '@/src/pages/Login';
 import About from '@/src/pages/About';
 import FAQ from '@/src/pages/FAQ';
 import Contact from '@/src/pages/Contact';
@@ -22,6 +23,7 @@ export default function App() {
           <main className="flex-grow">
             <Routes>
               <Route path="/" element={<Dashboard />} />
+              <Route path="/login" element={<Login />} />
               <Route path="/services" element={<ServicesListing />} />
               <Route path="/services/:id" element={<ServiceDetails />} />
               <Route path="/requests" element={<RequestsManagement />} />
