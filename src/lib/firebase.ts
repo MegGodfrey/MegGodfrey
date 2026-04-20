@@ -1,19 +1,35 @@
 import { initializeApp } from 'firebase/app';
 import { getAuth } from 'firebase/auth';
-import { getFirestore, doc, getDocFromServer } from 'firebase/firestore';
+import { initializeFirestore, doc, getDocFromServer } from 'firebase/firestore';
 import firebaseConfig from '@/firebase-applet-config.json';
 
 const app = initializeApp(firebaseConfig);
 export const auth = getAuth(app);
-export const db = getFirestore(app, firebaseConfig.firestoreDatabaseId);
+
+// Use initializeFirestore to allow for connection settings that might be needed in some environments
+export const db = initializeFirestore(app, {
+  experimentalAutoDetectLongPolling: true,
+}, firebaseConfig.firestoreDatabaseId);
 
 // Test connection on boot as per guidelines
 async function testConnection() {
   try {
+    // Attempting a read to verify connectivity
     await getDocFromServer(doc(db, 'test', 'connection'));
   } catch (error) {
-    if (error instanceof Error && error.message.includes('the client is offline')) {
-      console.error("Please check your Firebase configuration.");
+    if (error instanceof Error) {
+      if (error.message.includes('the client is offline')) {
+        console.error("Firestore is offline. Please check your internet connection.");
+      } else if (
+        error.message.includes('Permission denied') || 
+        error.message.includes('permission-denied') ||
+        error.message.includes('Missing or insufficient permissions')
+      ) {
+        // This is actually a good sign! It means we reached the server but were rejected by rules.
+        console.log("Firestore connection verified (Connection successful, permissions restricted as expected).");
+      } else {
+        console.error("Firestore connectivity test failed:", error.message);
+      }
     }
   }
 }

@@ -31,33 +31,42 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       }
 
       if (authUser) {
-        // First check if profile exists, if not create it
-        const docRef = doc(db, 'users', authUser.uid);
-        const docSnap = await getDoc(docRef);
-        
-        if (!docSnap.exists()) {
-          const newProfile = {
-            uid: authUser.uid,
-            email: authUser.email,
-            displayName: authUser.displayName,
-            photoURL: authUser.photoURL,
-            role: 'seeker',
-            skills: [],
-            bio: '',
-            createdAt: serverTimestamp(),
-            averageRating: 0,
-            totalReviews: 0,
-          };
-          await setDoc(docRef, newProfile);
-        }
-
-        // Set up real-time listener for profile
-        unsubscribeProfile = onSnapshot(docRef, (doc) => {
-          if (doc.exists()) {
-            setProfile(doc.data());
+        try {
+          // First check if profile exists, if not create it
+          const docRef = doc(db, 'users', authUser.uid);
+          const docSnap = await getDoc(docRef);
+          
+          if (!docSnap.exists()) {
+            const newProfile = {
+              uid: authUser.uid,
+              email: authUser.email,
+              displayName: authUser.displayName,
+              photoURL: authUser.photoURL,
+              role: 'seeker',
+              skills: [],
+              bio: '',
+              createdAt: serverTimestamp(),
+              averageRating: 0,
+              totalReviews: 0,
+            };
+            await setDoc(docRef, newProfile);
           }
+
+          // Set up real-time listener for profile
+          unsubscribeProfile = onSnapshot(docRef, (doc) => {
+            if (doc.exists()) {
+              setProfile(doc.data());
+            }
+            setLoading(false);
+          }, (error) => {
+            console.error("Profile listener error:", error);
+            setLoading(false);
+          });
+        } catch (error) {
+          console.error("Failed to initialize user profile:", error);
+          toast.error("Could not load your profile. Please check your connection.");
           setLoading(false);
-        });
+        }
       } else {
         setProfile(null);
         setLoading(false);

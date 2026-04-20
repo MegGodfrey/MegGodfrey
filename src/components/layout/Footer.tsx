@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { Monitor } from 'lucide-react';
+import { Monitor, Facebook, Twitter, Github, Gamepad2, MessageCircle } from 'lucide-react';
 
 export default function Footer() {
   const currentYear = new Date().getFullYear();
@@ -63,10 +63,22 @@ export default function Footer() {
         
         <div className="pt-8 border-t flex flex-col items-center gap-4 text-sm text-muted-foreground text-center">
           <p>© {currentYear} StudentServe. All rights reserved.</p>
-          <div className="flex items-center gap-4">
-            <span className="hover:text-primary cursor-pointer transition-colors">Twitter</span>
-            <span className="hover:text-primary cursor-pointer transition-colors">GitHub</span>
-            <span className="hover:text-primary cursor-pointer transition-colors">Discord</span>
+          <div className="flex items-center gap-6 mt-2">
+            <span className="hover:text-primary cursor-pointer transition-colors" title="Facebook">
+              <Facebook className="w-5 h-5" />
+            </span>
+            <span className="hover:text-primary cursor-pointer transition-colors" title="Twitter">
+              <Twitter className="w-5 h-5" />
+            </span>
+            <span className="hover:text-primary cursor-pointer transition-colors" title="GitHub">
+              <Github className="w-5 h-5" />
+            </span>
+            <span className="hover:text-primary cursor-pointer transition-colors" title="Discord">
+              <Gamepad2 className="w-5 h-5" />
+            </span>
+            <span className="hover:text-primary cursor-pointer transition-colors" title="WhatsApp">
+              <MessageCircle className="w-5 h-5" />
+            </span>
           </div>
         </div>
       </div>
